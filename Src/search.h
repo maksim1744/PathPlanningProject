@@ -8,6 +8,7 @@
 #include "searchresult.h"
 
 #include <chrono>
+#include <iomanip>
 #include <limits>
 #include <list>
 #include <map>

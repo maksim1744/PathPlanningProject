@@ -55,7 +55,8 @@ double Search::get_heuristics(std::pair<int, int> position, std::pair<int, int> 
         return 0;
     } else if (config.SearchParams[CN_SP_ST] == CN_SP_ST_ASTAR) {
         if (options.metrictype == CN_SP_MT_DIAG) {
-            return std::min(abs(position.first - goal.first), abs(position.second - goal.second));
+            double dx = abs(position.first - goal.first), dy = abs(position.second - goal.second);
+            return std::min(dx, dy) * (CN_SQRT_TWO - 1) + std::max(dx, dy);
         } else if (options.metrictype == CN_SP_MT_MANH) {
             return abs(position.first - goal.first) + abs(position.second - goal.second);
         } else if (options.metrictype == CN_SP_MT_EUCL) {
@@ -67,10 +68,10 @@ double Search::get_heuristics(std::pair<int, int> position, std::pair<int, int> 
     return 0;
 }
 
-SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options, const Config &config)
-{
+SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options, const Config &config) {
+    auto start_time = clock();
+
     sresult.pathfound = false;
-    sresult.nodescreated = 0;
     sresult.numberofsteps = 0;
     sresult.pathlength = 0;
 
@@ -86,7 +87,6 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     OPEN = {start};
 
     while (!OPEN.empty()) {
-        ++sresult.numberofsteps;
         Node v = *OPEN.begin();
         OPEN.erase(OPEN.begin());
         if (CLOSE.find(v) != CLOSE.end()) {
@@ -101,8 +101,6 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
         for (auto& node : neighbours) {
             auto it = CLOSE.find(node);
             if (it == CLOSE.end()) {
-                ++sresult.nodescreated;
-
                 node.parent = (Node*)&(*CLOSE.find(v));
                 node.h = get_heuristics(node.position(), goal_pos, options, config);
                 node.g += v.g;
@@ -111,7 +109,17 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
                 OPEN.insert(node);
             }
         }
+        ++sresult.numberofsteps;
     }
+
+    while (!OPEN.empty()) {
+        auto node = *OPEN.begin();
+        if (CLOSE.find(node) == CLOSE.end()) {
+            CLOSE.insert(node);
+        }
+        OPEN.erase(OPEN.begin());
+    }
+    sresult.nodescreated = CLOSE.size();
 
     if (sresult.pathfound) {
         lppath.clear();
@@ -144,7 +152,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
         }
     }
 
-    sresult.time = 0;
+    sresult.time = (double)(clock() - start_time) / CLOCKS_PER_SEC;
     sresult.hppath = &hppath;
     sresult.lppath = &lppath;
 
