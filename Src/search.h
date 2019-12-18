@@ -17,6 +17,8 @@
 #include <vector>
 #include <vector>
 
+bool NodeGComparator(const Node &first, const Node &second);
+
 class Search
 {
     public:
@@ -46,7 +48,7 @@ class Search
         SearchResult                    sresult; //This will store the search result
         std::list<Node>                 lppath, hppath; //
 
-        std::set<Node, NodeGComparator> OPEN;
+        std::set<Node, bool(*)(const Node&, const Node&)> OPEN;
         std::set<Node, NodePosComparator> CLOSE;
 
         //CODE HERE to define other members of the class

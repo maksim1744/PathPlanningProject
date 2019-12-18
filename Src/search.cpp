@@ -6,7 +6,6 @@ Search::Search() {
 
 Search::~Search() {}
 
-
 std::vector<Node> Search::get_neighbours(Node from, const Map &map, const EnvironmentOptions &options) {
     std::vector<Node> result;
 
@@ -69,6 +68,12 @@ double Search::get_heuristics(std::pair<int, int> position, std::pair<int, int> 
 }
 
 SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options, const Config &config) {
+    if (config.SearchParams[CN_SP_ST] == CN_SP_ST_DIJK || config.SearchParams[CN_SP_BT] == CN_SP_BT_GMIN) {
+        OPEN = std::set<Node, bool(*)(const Node&, const Node&)>(&NodeGminComparator);
+    } else {
+        OPEN = std::set<Node, bool(*)(const Node&, const Node&)>(&NodeGmaxComparator);
+    }
+
     auto start_time = clock();
 
     sresult.pathfound = false;

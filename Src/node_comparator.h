@@ -1,18 +1,15 @@
 #ifndef NODE_COMPARATOR_H
 #define NODE_COMPARATOR_H
+
 #include "node.h"
 
-class NodeGComparator
-{
-    public:
-        bool operator()(const Node &first, const Node &second) const;
-};
+#include <cmath>
 
+bool NodeGminComparator(const Node &first, const Node &second);
+bool NodeGmaxComparator(const Node &first, const Node &second);
 
-class NodePosComparator
-{
-    public:
-        bool operator()(const Node &first, const Node &second) const;
+struct NodePosComparator {
+    bool operator()(const Node &first, const Node &second) const;
 };
 
 #endif
