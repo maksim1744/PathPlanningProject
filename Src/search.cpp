@@ -80,7 +80,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
 
     start.g = 0;
     start.h = get_heuristics(start.position(), goal_pos, options, config);
-    start.f = start.g + start.h;
+    start.f = start.g + start.h * config.SearchParams[CN_SP_HW];
     start.parent = nullptr;
 
     OPEN = {start};
@@ -106,7 +106,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
                 node.parent = (Node*)&(*CLOSE.find(v));
                 node.h = get_heuristics(node.position(), goal_pos, options, config);
                 node.g += v.g;
-                node.f = node.h + node.g;
+                node.f = node.g + node.h * config.SearchParams[CN_SP_HW];
 
                 OPEN.insert(node);
             }
@@ -123,6 +123,24 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
         while (node != nullptr) {
             lppath.insert(lppath.begin(), *node);
             node = node->parent;
+        }
+
+        hppath.clear();
+        auto it = lppath.begin();
+        std::pair<int, int> last_direction = {0, 0};
+        for (int i = 0; i < lppath.size(); ++i) {
+            std::pair<int, int> direction = {0, 0};
+            if (i + 1 != lppath.size()) {
+                auto next = it;
+                ++next;
+                direction.first = next->i - it->i;
+                direction.second = next->j - it->j;
+            }
+            if (i == 0 || i + 1 == lppath.size() || direction != last_direction) {
+                hppath.insert(hppath.end(), *it);
+            }
+            ++it;
+            last_direction = direction;
         }
     }
 
