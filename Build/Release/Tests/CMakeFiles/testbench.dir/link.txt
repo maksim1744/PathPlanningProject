@@ -1,3 +1,0 @@
-C:\Users\magor\AppData\Local\Programs\Python\Python36-32\Lib\site-packages\cmake\data\bin\cmake.exe -E remove -f CMakeFiles\testbench.dir/objects.a
-C:\PROGRA~1\mingw32\bin\ar.exe cr CMakeFiles\testbench.dir/objects.a @CMakeFiles\testbench.dir\objects1.rsp
-C:\PROGRA~1\mingw32\bin\G__~1.EXE  -std=c++11 -O2 -Wall -Wextra -static -static-libgcc -static-libstdc++ -O3 -DNDEBUG   -Wl,--whole-archive CMakeFiles\testbench.dir/objects.a -Wl,--no-whole-archive  -o testbench.exe -Wl,--out-implib,libtestbench.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\testbench.dir\linklibs.rsp
