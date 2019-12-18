@@ -7,23 +7,41 @@ Search::Search() {
 Search::~Search() {}
 
 
-std::vector<Node> Search::get_neighbours(Node node, const Map &map, const EnvironmentOptions &options) {
+std::vector<Node> Search::get_neighbours(Node from, const Map &map, const EnvironmentOptions &options) {
     std::vector<Node> result;
 
     std::vector<std::pair<int, int>> near = {
         {-1, 0},
         {1, 0},
         {0, -1},
-        {0, 1}
+        {0, 1},
+        {-1, -1},
+        {-1, 1},
+        {1, -1},
+        {1, 1},
     };
 
     for (auto [di, dj] : near) {
-        int new_i = node.i + di, new_j = node.j + dj;
+        int new_i = from.i + di, new_j = from.j + dj;
         if (new_i < 0 || new_j < 0 || new_i >= map.getMapWidth() || new_j >= map.getMapHeight())
             continue;
         if (map.CellIsTraversable(new_i, new_j)) {
             Node node(std::make_pair(new_i, new_j));
             node.g = 1;
+            if (di != 0 && dj != 0) {
+                if (!options.allowdiagonal)
+                    continue;
+                int corners = 0;
+                if (map.CellIsObstacle(from.i + di, from.j))
+                    corners++;
+                if (map.CellIsObstacle(from.i, from.j + dj))
+                    corners++;
+                if (corners >= 1 && !options.cutcorners)
+                    continue;
+                if (corners >= 2 && !options.allowsqueeze)
+                    continue;
+                node.g = CN_SQRT_TWO;
+            }
             result.push_back(node);
         }
     }
@@ -41,6 +59,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     sresult.pathfound = false;
     sresult.nodescreated = 0;
     sresult.numberofsteps = 0;
+    sresult.pathlength = 0;
 
     std::pair<int, int> goal_pos = map.getGoalPos();
 
@@ -85,6 +104,9 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
         lppath.clear();
 
         Node *node = (Node*)&(*CLOSE.find(Node(goal_pos)));
+
+        sresult.pathlength = node->g;
+
         while (node != nullptr) {
             lppath.insert(lppath.begin(), *node);
             node = node->parent;

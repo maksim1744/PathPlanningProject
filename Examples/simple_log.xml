@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <map>
+        <width>11</width>
+        <height>11</height>
+        <cellsize>24</cellsize>
+        <startx>5</startx>
+        <starty>3</starty>
+        <finishx>5</finishx>
+        <finishy>10</finishy>
+        <grid>
+            <row>0 0 0 0 0 0 0 0 0 0 0</row>
+            <row>0 0 0 0 0 0 0 0 0 0 0</row>
+            <row>0 0 0 0 0 0 0 0 0 0 0</row>
+            <row>0 0 1 1 0 0 1 1 1 0 0</row>
+            <row>0 0 1 1 0 0 1 1 1 0 0</row>
+            <row>0 0 0 0 1 1 0 0 0 0 0</row>
+            <row>0 0 0 0 1 1 0 0 0 0 0</row>
+            <row>0 0 0 0 1 1 0 0 0 0 0</row>
+            <row>0 0 0 0 0 0 0 0 0 0 0</row>
+            <row>0 0 0 0 0 0 0 0 0 0 0</row>
+            <row>0 0 0 0 0 0 0 0 0 0 0</row>
+        </grid>
+    </map>
+    <algorithm>
+        <searchtype>astar</searchtype>
+        <metrictype>diagonal</metrictype>
+        <breakingties>g-max</breakingties>
+        <hweight>1</hweight>
+        <allowdiagonal>false</allowdiagonal>
+        <cutcorners>false</cutcorners>
+        <allowsqueeze>false</allowsqueeze>
+    </algorithm>
+    <options>
+        <loglevel>1</loglevel>
+        <logpath/>
+        <logfilename/>
+    </options>
+    <log>
+        <mapfilename>Examples\simple.xml</mapfilename>
+        <summary numberofsteps="105" nodescreated="174" length="17" length_scaled="408" time="0.000000"/>
+        <path>
+            <row number="0">0 0 0 0 0 0 0 0 0 0 0 </row>
+            <row number="1">0 0 0 0 0 0 0 0 0 0 0 </row>
+            <row number="2">0 * * * * * 0 0 0 0 0 </row>
+            <row number="3">0 * 1 1 0 * 1 1 1 0 0 </row>
+            <row number="4">0 * 1 1 0 0 1 1 1 0 0 </row>
+            <row number="5">0 * * * 1 1 0 0 0 0 0 </row>
+            <row number="6">0 0 0 * 1 1 0 0 0 0 0 </row>
+            <row number="7">0 0 0 * 1 1 0 0 0 0 0 </row>
+            <row number="8">0 0 0 * * * 0 0 0 0 0 </row>
+            <row number="9">0 0 0 0 0 * 0 0 0 0 0 </row>
+            <row number="10">0 0 0 0 0 * 0 0 0 0 0 </row>
+        </path>
+        <lplevel>
+            <node x="5" y="3" number="0"/>
+            <node x="5" y="2" number="1"/>
+            <node x="4" y="2" number="2"/>
+            <node x="3" y="2" number="3"/>
+            <node x="2" y="2" number="4"/>
+            <node x="1" y="2" number="5"/>
+            <node x="1" y="3" number="6"/>
+            <node x="1" y="4" number="7"/>
+            <node x="1" y="5" number="8"/>
+            <node x="2" y="5" number="9"/>
+            <node x="3" y="5" number="10"/>
+            <node x="3" y="6" number="11"/>
+            <node x="3" y="7" number="12"/>
+            <node x="3" y="8" number="13"/>
+            <node x="4" y="8" number="14"/>
+            <node x="5" y="8" number="15"/>
+            <node x="5" y="9" number="16"/>
+            <node x="5" y="10" number="17"/>
+        </lplevel>
+        <hplevel/>
+    </log>
+</root>

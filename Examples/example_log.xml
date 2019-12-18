@@ -51,8 +51,8 @@
         <logfilename/>
     </options>
     <log>
-        <mapfilename>Examples/example.xml</mapfilename>
-        <summary numberofsteps="519" nodescreated="969" length="0" length_scaled="0" time="0.000000"/>
+        <mapfilename>Examples\example.xml</mapfilename>
+        <summary numberofsteps="519" nodescreated="969" length="888" length_scaled="21312" time="0.000000"/>
         <path>
             <row number="0">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
             <row number="1">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
