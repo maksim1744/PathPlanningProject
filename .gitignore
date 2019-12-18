@@ -1,2 +1,5 @@
-Build/
+Build/Debug/*
+Build/Release/*
 Scripts/
+!Build/Debug/.gitkeep
+!Build/Release/.gitkeep
