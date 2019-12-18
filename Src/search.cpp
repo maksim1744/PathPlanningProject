@@ -50,12 +50,24 @@ std::vector<Node> Search::get_neighbours(Node from, const Map &map, const Enviro
     return std::move(result);
 }
 
-double Search::get_heuristics(std::pair<int, int> position, std::pair<int, int> goal, const EnvironmentOptions &options) {
+double Search::get_heuristics(std::pair<int, int> position, std::pair<int, int> goal, const EnvironmentOptions &options, const Config &config) {
+    if (config.SearchParams[CN_SP_ST] == CN_SP_ST_DIJK) {
+        return 0;
+    } else if (config.SearchParams[CN_SP_ST] == CN_SP_ST_ASTAR) {
+        if (options.metrictype == CN_SP_MT_DIAG) {
+            return std::min(abs(position.first - goal.first), abs(position.second - goal.second));
+        } else if (options.metrictype == CN_SP_MT_MANH) {
+            return abs(position.first - goal.first) + abs(position.second - goal.second);
+        } else if (options.metrictype == CN_SP_MT_EUCL) {
+            return hypot(position.first - goal.first, position.second - goal.second);
+        } else if (options.metrictype == CN_SP_MT_CHEB) {
+            return std::max(abs(position.first - goal.first), abs(position.second - goal.second));
+        }
+    }
     return 0;
-    // return hypot(position.first - goal.first, position.second - goal.second);
 }
 
-SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options)
+SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options, const Config &config)
 {
     sresult.pathfound = false;
     sresult.nodescreated = 0;
@@ -67,7 +79,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     Node start(map.getStartPos());
 
     start.g = 0;
-    start.h = get_heuristics(start.position(), goal_pos, options);
+    start.h = get_heuristics(start.position(), goal_pos, options, config);
     start.f = start.g + start.h;
     start.parent = nullptr;
 
@@ -92,7 +104,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
                 ++sresult.nodescreated;
 
                 node.parent = (Node*)&(*CLOSE.find(v));
-                node.h = get_heuristics(node.position(), goal_pos, options);
+                node.h = get_heuristics(node.position(), goal_pos, options, config);
                 node.g += v.g;
                 node.f = node.h + node.g;
 

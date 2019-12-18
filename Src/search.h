@@ -1,10 +1,11 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 
-#include "ilogger.h"
-#include "searchresult.h"
+#include "config.h"
 #include "environmentoptions.h"
+#include "ilogger.h"
 #include "node_comparator.h"
+#include "searchresult.h"
 
 #include <chrono>
 #include <limits>
@@ -20,11 +21,11 @@ class Search
     public:
         Search();
         ~Search(void);
-        SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options);
+        SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options, const Config &config);
 
     protected:
         std::vector<Node> get_neighbours(Node node, const Map &map, const EnvironmentOptions &options);
-        double get_heuristics(std::pair<int, int> position, std::pair<int, int> goal, const EnvironmentOptions &options);
+        double get_heuristics(std::pair<int, int> position, std::pair<int, int> goal, const EnvironmentOptions &options, const Config &config);
         //CODE HERE
 
         //Hint 1. You definetely need class variables for OPEN and CLOSE

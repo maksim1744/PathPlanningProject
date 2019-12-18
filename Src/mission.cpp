@@ -52,7 +52,7 @@ void Mission::createSearch()
 
 void Mission::startSearch()
 {
-    sr = search.startSearch(logger, map, options);
+    sr = search.startSearch(logger, map, options, config);
 }
 
 void Mission::printSearchResultsToConsole()
