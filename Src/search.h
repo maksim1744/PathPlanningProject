@@ -1,13 +1,19 @@
 #ifndef SEARCH_H
 #define SEARCH_H
+
 #include "ilogger.h"
 #include "searchresult.h"
 #include "environmentoptions.h"
-#include <list>
-#include <vector>
-#include <math.h>
-#include <limits>
+#include "node_comparator.h"
+
 #include <chrono>
+#include <limits>
+#include <list>
+#include <map>
+#include <math.h>
+#include <set>
+#include <vector>
+#include <vector>
 
 class Search
 {
@@ -17,6 +23,8 @@ class Search
         SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options);
 
     protected:
+        std::vector<Node> get_neighbours(Node node, const Map &map, const EnvironmentOptions &options);
+        double get_heuristics(std::pair<int, int> position, std::pair<int, int> goal, const EnvironmentOptions &options);
         //CODE HERE
 
         //Hint 1. You definetely need class variables for OPEN and CLOSE
@@ -35,6 +43,9 @@ class Search
 
         SearchResult                    sresult; //This will store the search result
         std::list<Node>                 lppath, hppath; //
+
+        std::set<Node, NodeGComparator> OPEN;
+        std::set<Node, NodePosComparator> CLOSE;
 
         //CODE HERE to define other members of the class
 };
