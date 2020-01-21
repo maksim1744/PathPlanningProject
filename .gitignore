@@ -3,3 +3,6 @@ Build/Release/*
 Scripts/
 !Build/Debug/.gitkeep
 !Build/Release/.gitkeep
+Examples/*
+!Examples/example.xml
+!Examples/example_log.xml
