@@ -20,7 +20,8 @@ std::vector<Node> Search::get_neighbours(Node from, const Map &map, const Enviro
         {1, 1},
     };
 
-    for (auto [di, dj] : near) {
+    for (auto dij : near) {
+        int di = dij.first, dj = dij.second;
         int new_i = from.i + di, new_j = from.j + dj;
         if (new_i < 0 || new_j < 0 || new_i >= map.getMapWidth() || new_j >= map.getMapHeight())
             continue;
