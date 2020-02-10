@@ -2,6 +2,9 @@
 #define	XMLLOGGER_H
 #include "tinyxml2.h"
 #include "ilogger.h"
+#include "node_comparator.h"
+
+#include <set>
 
 
 //That's the class that flushes the data to the output XML
@@ -20,7 +23,7 @@ public:
 
     void writeToLogMap(const Map &Map, const std::list<Node> &path);
 
-    //void writeToLogOpenClose(const typename &open, const typename &close);
+    void writeToLogOpenClose(std::set<Node, bool(*)(const Node&, const Node&)> open, std::set<Node, NodePosComparator> &close, int number);
 
     void writeToLogPath(const std::list<Node> &path);
 

@@ -29,6 +29,7 @@ class Search
     protected:
         std::vector<Node> get_neighbours(Node node, const Map &map, const EnvironmentOptions &options);
         double get_heuristics(std::pair<int, int> position, std::pair<int, int> goal, const EnvironmentOptions &options, const Config &config);
+        std::set<Node, bool(*)(const Node&, const Node&)> getFilteredOpen() const;
         //CODE HERE
 
         //Hint 1. You definetely need class variables for OPEN and CLOSE

@@ -67,6 +67,19 @@ double Search::get_heuristics(std::pair<int, int> position, std::pair<int, int> 
     return 0;
 }
 
+std::set<Node, bool(*)(const Node&, const Node&)> Search::getFilteredOpen() const {
+    auto result = OPEN;
+    result.clear();
+    std::set<std::pair<int, int>> used;
+    for (auto node : OPEN) {
+        if (used.find(node.position()) == used.end()) {
+            used.insert(node.position());
+            result.insert(node);
+        }
+    }
+    return result;
+}
+
 SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options, const Config &config) {
     if (config.SearchParams[CN_SP_ST] == CN_SP_ST_DIJK || config.SearchParams[CN_SP_BT] == CN_SP_BT_GMIN) {
         OPEN = std::set<Node, bool(*)(const Node&, const Node&)>(&NodeGminComparator);
@@ -114,17 +127,24 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
                 OPEN.insert(node);
             }
         }
+        if (Logger->getLogLevel() == CN_LP_LEVEL_FULL_WORD)
+            Logger->writeToLogOpenClose(getFilteredOpen(), CLOSE, sresult.numberofsteps);
         ++sresult.numberofsteps;
     }
 
-    while (!OPEN.empty()) {
-        auto node = *OPEN.begin();
+    auto old_close = CLOSE;
+
+    for (auto node : OPEN) {
         if (CLOSE.find(node) == CLOSE.end()) {
             CLOSE.insert(node);
         }
-        OPEN.erase(OPEN.begin());
     }
     sresult.nodescreated = CLOSE.size();
+
+    if (Logger->getLogLevel() == CN_LP_LEVEL_MEDIUM_WORD)
+        Logger->writeToLogOpenClose(getFilteredOpen(), old_close, 0);
+    else if (Logger->getLogLevel() == CN_LP_LEVEL_FULL_WORD)
+        Logger->writeToLogOpenClose(getFilteredOpen(), old_close, sresult.numberofsteps);
 
     if (sresult.pathfound) {
         lppath.clear();
